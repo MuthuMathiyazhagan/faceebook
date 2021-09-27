@@ -1,0 +1,18 @@
+{
+    "URL": "mongodb://localhost:27017/",
+    "DB_NAME": "glance",
+    "options": {
+      "useNewUrlParser": true,
+      "useUnifiedTopology": true
+    },
+    "collections": {
+      "group": "groups"
+    },
+    "auth": {
+      "salt": 10
+    },
+    "errors": {
+      "11000": "Already Exists"
+    }
+  }
+  
