@@ -16,6 +16,7 @@
     "jade": "^0.29.0",
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
-    "puppeteer": "^10.4.0"
+    "puppeteer": "^10.4.0",
+    "puppeteer-page-proxy": "^1.2.8"
   }
 }
