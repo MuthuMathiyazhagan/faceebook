@@ -3,7 +3,7 @@ const dbConfig = require('../db/dbConfig.json');
 const puppeteer = require('puppeteer');
 const useProxy = require('puppeteer-page-proxy');
 
-const TIMEOUT = 7000;
+const TIMEOUT = 10000;
 const fs = require('fs');
 // const C = require('../config.json');
 const USERNAME_SELECTOR = '#email';
@@ -19,6 +19,12 @@ startBrowser = async () => {
     });
     const page = await browser.newPage();
     // await useProxy(page, 'http://125.16.111.194:8080');
+
+    await page.authenticate({
+        username: 'SelESupport2021',
+        password: 'O5r0EgB',
+        // for 103.199.187.15 // New One 
+    });
 
     return { browser, page };
 }
@@ -64,12 +70,13 @@ playTest = async (url, searchString, postGroup, username, password) => {
     // await page.waitForNavigation();
     await page.waitForTimeout(TIMEOUT + 5000);
     // await waitTillHTMLRendered(page)
-    console.log("Login");
+    console.log("Logged IN");
     await page.screenshot({ path: 'glance0.png' });
+    console.log("Please wait while all content get Loading..............");
 
-    // await page.click('[title="Accept All"]');
+    // // await page.click('[title="Accept All"]');
     await page.waitForTimeout(TIMEOUT + 5000);
-    console.log("Logged In Button Clicked");
+    // console.log("Logged In Button Clicked");
 
     await page.screenshot({ path: 'glance.png' });
 
@@ -121,14 +128,14 @@ playTest = async (url, searchString, postGroup, username, password) => {
     await page.click('[role="article"] [role="button"]');
     console.log("Join Group Button Clicked, for Unjoined Group");
 
-    await page.waitForTimeout(TIMEOUT);
+    await page.waitForTimeout(TIMEOUT + 5000);
 
 
 
 
     await page.screenshot({ path: 'glance5.png' });
 
-    await page.click('[role="article"] [role="link"] span');
+    await page.click('[role="article"] [role="link"] span')[2];
     // const [first, second, third] = await page.$$('[role="article"] [role="link"] span');
     // await second.click;
     await page.waitForTimeout(TIMEOUT);
@@ -153,24 +160,18 @@ playTest = async (url, searchString, postGroup, username, password) => {
     // await page.click('[id="placeholder-6hpma"]');
     await page.keyboard.type(postGroup);
     console.log("Typing the post text");
+    await page.waitForTimeout(5000);
 
 
     await page.click('[aria-label="Post"]');
-    console.log("Hit Post");
 
+    console.log("Hit Post");
 
     await page.waitForTimeout(TIMEOUT);
 
-
     await page.screenshot({ path: 'glance8.png' });
 
-
     console.log("\\n");
-
-
-
-
-
 
 
 
