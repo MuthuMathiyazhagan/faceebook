@@ -131,11 +131,13 @@ playTest = async (url, searchString, postGroup, username, password) => {
     await page.waitForTimeout(TIMEOUT + 5000);
 
 
-
-
     await page.screenshot({ path: 'glance5.png' });
+    const example = await page.$$('[role="article"] [role="link"] span');
 
-    await page.click('[role="article"] [role="link"] span')[2];
+    await example[1].click();
+
+
+    // await page.click('[role="article"] [role="link"] span')[2];
     // const [first, second, third] = await page.$$('[role="article"] [role="link"] span');
     // await second.click;
     await page.waitForTimeout(TIMEOUT);

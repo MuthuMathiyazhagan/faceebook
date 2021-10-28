@@ -6,7 +6,7 @@ const facebookController = require('../controller/facebook');
 
 router.get('/hello', function (req, res, next) {
     let searchString = "Disha patani Fan's club's";
-    let postGroup = "https://www.youtube.com/watch?v=aKijvAhzFcs";
+    let postGroup = "https://www.youtube.com/watch?v=xE9FBL7jUGA";
     let username = "obenchainryder47@spamavert.net";
     let password = "facebook@123";
     facebookController.runScript(searchString, postGroup, username, password);
