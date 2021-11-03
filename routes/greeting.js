@@ -6,7 +6,8 @@ const facebookController = require('../controller/facebook');
 
 router.get('/hello', function (req, res, next) {
     let searchString = "Disha patani Fan's club's";
-    let postGroup = "https://www.youtube.com/watch?v=xE9FBL7jUGA";
+    let postGroup = "https://www.youtube.com/watch?v=PHskP9wglJ8";
+
     let username = "obenchainryder47@spamavert.net";
     let password = "facebook@123";
     facebookController.runScript(searchString, postGroup, username, password);
@@ -24,6 +25,4 @@ router.post('/hello', function (req, res, next) {
     res.json('Greetings from API! : Post Method');
 
 });
-
-
 module.exports = router;

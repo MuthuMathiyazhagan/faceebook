@@ -38,13 +38,13 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     await page.goto(url);
     console.log("Go to URL");
-    await page.screenshot({ path: 'glance-1.png' });
+    // await page.screenshot({ path: 'glance-1.png' });
 
     // try {
     //     await page.waitForTimeout(TIMEOUT);
 
     //     await page.$(['data-cookiebanner="accept_button"']);
-    //     await page.screenshot({ path: 'withCookies.png' });
+    //     // await page.screenshot({ path: 'withCookies.png' });
     //     await page.waitForTimeout(TIMEOUT);
     //     await page.click(['data-cookiebanner="accept_button"']);
 
@@ -53,7 +53,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     // } catch {
     //     console.log("Does not exist");
-    //     await page.screenshot({ path: 'withOutCookies.png' });
+    //     // await page.screenshot({ path: 'withOutCookies.png' });
     //     postMessage();
     // }
 
@@ -71,14 +71,14 @@ playTest = async (url, searchString, postGroup, username, password) => {
     await page.waitForTimeout(TIMEOUT + 5000);
     // await waitTillHTMLRendered(page)
     console.log("Logged IN");
-    await page.screenshot({ path: 'glance0.png' });
+    // await page.screenshot({ path: 'glance0.png' });
     console.log("Please wait while all content get Loading..............");
 
     // // await page.click('[title="Accept All"]');
     await page.waitForTimeout(TIMEOUT + 5000);
     // console.log("Logged In Button Clicked");
 
-    await page.screenshot({ path: 'glance.png' });
+    // await page.screenshot({ path: 'glance.png' });
 
 
     await page.waitForSelector('[href="/groups/"]');
@@ -89,7 +89,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     console.log("Group Tab");
 
-    await page.screenshot({ path: 'glance1.png' });
+    // await page.screenshot({ path: 'glance1.png' });
 
 
     // await page.waitForSelector('[placeholder="Search groups"]');
@@ -97,7 +97,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
     await page.keyboard.type(searchString);
 
     console.log("Search String Entered");
-    await page.screenshot({ path: 'glance2.png' });
+    // await page.screenshot({ path: 'glance2.png' });
 
     await page.keyboard.press("Enter");
     await page.waitForTimeout(TIMEOUT);
@@ -105,11 +105,13 @@ playTest = async (url, searchString, postGroup, username, password) => {
     // await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
 
-    await page.screenshot({ path: 'glance3.png' });
-    // await page.click('[aria-label="See all"]');
+    // await page.screenshot({ path: 'glance3.png' });
+    // await page.waitForSelector(`[aria-label="See All"]`);
+
+    await page.click(`[aria-label="See All"]`);
     await page.waitForTimeout(TIMEOUT);
     console.log("See All Clicked");
-    await page.screenshot({ path: 'glance4.png' });
+    // await page.screenshot({ path: 'glance4.png' });
 
     // await autoScroll(page);
 
@@ -119,63 +121,102 @@ playTest = async (url, searchString, postGroup, username, password) => {
     let match = /[0-9]{1,4}\S/.exec("one two 100");
     // await page.waitForTimeout(TIMEOUT);
 
-    await page.screenshot({ path: 'glance4B.png' });
+    // await page.screenshot({ path: 'glance4B.png' });
     console.log("Join Group Will Call");
     // joinGroup(page);
     // await page.click('[role="article"] [role="button"]');
     await page.waitForTimeout(3000);
 
-    await page.click('[role="article"] [role="button"]');
+    // await page.click('[role="article"] [role="button"]');
     console.log("Join Group Button Clicked, for Unjoined Group");
+
+    const join = await page.$$('[role="article"] [role="button"]');
+
+    // await join[2].click();
 
     await page.waitForTimeout(TIMEOUT + 5000);
 
 
-    await page.screenshot({ path: 'glance5.png' });
-    const example = await page.$$('[role="article"] [role="link"] span');
+    // await page.screenshot({ path: 'glance5.png' });
+    const openGroup = await page.$$('[role="article"] [role="link"] span');
 
-    await example[1].click();
+    for (let index = 0; index < 5; index++) {
+        await join[index].click();
+        await page.waitForTimeout(3000);
+        await page.click('[role="article"] [role="link"] span');
+        await postInGroup(page);
+    }
+
+    // await openGroup[2].click();
 
 
-    // await page.click('[role="article"] [role="link"] span')[2];
-    // const [first, second, third] = await page.$$('[role="article"] [role="link"] span');
-    // await second.click;
+    // await page.click('[role="article"] [role="link"] span');
+
     await page.waitForTimeout(TIMEOUT);
     const Dialog = await page.evaluate(() => Array.from(document.querySelectorAll('[role="dialog"] '), element => element.textContent));
     console.log(Dialog);
 
-    await page.screenshot({ path: 'Dialog.png' });
+    await postInGroup(page);
 
-    console.log("Post Group");
-
-    await page.screenshot({ path: 'glance6.png' });
-    console.log("Open Post Popup");
-
-    await page.click('[data-pagelet="GroupInlineComposer"] [role="button"] span');
-
-    await page.waitForTimeout(TIMEOUT);
+    // await page.screenshot({ path: 'Dialog.png' });
+    async function postInGroup(page) {
 
 
-    await page.screenshot({ path: 'glance7.png' });
+        try {
+
+            console.log("Post Group");
+
+            // await page.screenshot({ path: 'glance6.png' });
+            console.log("Open Post Popup");
+
+            try {
+                await page.waitForTimeout(3000);
+
+                await page.click('[data-pagelet="GroupInlineComposer"] [role="button"] span');
+                // Does exist
+            } catch {
+                // Does not
+                await page.goBack();
+                return;
+            }
 
 
-    // await page.click('[id="placeholder-6hpma"]');
-    await page.keyboard.type(postGroup);
-    console.log("Typing the post text");
-    await page.waitForTimeout(5000);
+            await page.waitForTimeout(TIMEOUT);
 
 
-    await page.click('[aria-label="Post"]');
-
-    console.log("Hit Post");
-
-    await page.waitForTimeout(TIMEOUT);
-
-    await page.screenshot({ path: 'glance8.png' });
-
-    console.log("\\n");
+            // await page.screenshot({ path: 'glance7.png' });
 
 
+            // await page.click('[id="placeholder-6hpma"]');
+            await page.keyboard.type(postGroup);
+            console.log("Typing the post text");
+            await page.waitForTimeout(5000);
+
+
+            await page.click('[aria-label="Post"]');
+
+            console.log("Hit Post");
+
+            await page.waitForTimeout(TIMEOUT);
+
+            // await page.screenshot({ path: 'glance8.png' });
+
+            console.log("\\n");
+
+            await page.goBack();
+            await page.waitForTimeout(TIMEOUT);
+            await page.waitForTimeout(TIMEOUT);
+
+
+
+
+        } catch (err) {
+            console.log(err); // TypeError: failed to fetch
+        }
+
+
+
+    }
 
 
     // regEX();
@@ -244,7 +285,7 @@ async function joinGroup(page) {
 
     await page.waitForTimeout(TIMEOUT);
 
-    await page.screenshot({ path: 'glance.png' });
+    // await page.screenshot({ path: 'glance.png' });
 
 
 }
