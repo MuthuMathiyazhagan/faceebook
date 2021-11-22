@@ -3,7 +3,7 @@ const dbConfig = require('../db/dbConfig.json');
 const puppeteer = require('puppeteer');
 const useProxy = require('puppeteer-page-proxy');
 
-const TIMEOUT = 10000;
+const TIMEOUT = 15000;
 const fs = require('fs');
 // const C = require('../config.json');
 const USERNAME_SELECTOR = '#email';
@@ -21,8 +21,9 @@ startBrowser = async () => {
     // await useProxy(page, 'http://125.16.111.194:8080');
 
     await page.authenticate({
-        username: 'SelESupport2021',
-        password: 'O5r0EgB',
+        username: 'Selkaustavghosh',
+        password: 'G4q3TcW',
+
         // for 103.199.187.15 // New One 
     });
 
@@ -38,6 +39,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     await page.goto(url);
     console.log("Go to URL");
+
     // await page.screenshot({ path: 'glance-1.png' });
 
     // try {
@@ -68,7 +70,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
 
     // await page.waitForNavigation();
-    await page.waitForTimeout(TIMEOUT + 5000);
+    await page.waitForTimeout(TIMEOUT + 25000);
     // await waitTillHTMLRendered(page)
     console.log("Logged IN");
     // await page.screenshot({ path: 'glance0.png' });
@@ -108,9 +110,13 @@ playTest = async (url, searchString, postGroup, username, password) => {
     // await page.screenshot({ path: 'glance3.png' });
     // await page.waitForSelector(`[aria-label="See All"]`);
 
-    await page.click(`[aria-label="See All"]`);
+    await page.click(`[aria-label="See all"]`);
     await page.waitForTimeout(TIMEOUT);
     console.log("See All Clicked");
+
+
+
+
     // await page.screenshot({ path: 'glance4.png' });
 
     // await autoScroll(page);
@@ -129,49 +135,107 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     // await page.click('[role="article"] [role="button"]');
     console.log("Join Group Button Clicked, for Unjoined Group");
+    await nov3Code();
+    async function nov3Code() {
+        const join = await page.$$('[role="article"] [role="button"]');
 
-    const join = await page.$$('[role="article"] [role="button"]');
+        // await join[2].click();
 
-    // await join[2].click();
-
-    await page.waitForTimeout(TIMEOUT + 5000);
+        await page.waitForTimeout(TIMEOUT + 5000);
 
 
-    // await page.screenshot({ path: 'glance5.png' });
-    const openGroup = await page.$$('[role="article"] [role="link"] span');
+        await page.screenshot({ path: 'glance5.png' });
+        const example = await page.$$('[role="article"] [role="link"] span');
+        // await page.screenshot({ path: 'glance5.png' });
+        const openGroup = await page.$$('[role="article"] [role="link"] span');
 
-    for (let index = 0; index < 5; index++) {
-        await join[index].click();
-        await page.waitForTimeout(3000);
-        await page.click('[role="article"] [role="link"] span');
-        await postInGroup(page);
+        for (let index = 0; index < 5; index++) {
+
+            await page.evaluate(() => {
+                window.scrollBy(0, 100);
+            });
+
+            await join[index].click();
+            await page.waitForTimeout(3000);
+
+            await openGroup[index].click();
+            // await page.click('[role="article"] [role="link"] span');
+            await postInGroup(page);
+
+        }
     }
 
-    // await openGroup[2].click();
+
+    // Duplicate
+    async function newCode() {
+        await page.evaluate(async () => {
+
+            let join = $$('[role="article"] [role="button"]').toArray();
+            let openGroup = $$('[role="article"] [role="link"] span').toArray();
+            for (i = 0; i < /*elements.length*/5; i++) {
+                console.log(join[i]);
+                $(join[i]).click();
+                await page.waitForTimeout(10000);
+
+                console.log(openGroup[i]);
+                $(openGroup[i]).click();
+
+                await postInGroup(page);
+
+            }
+        });
+    }
+
+    async function oldOne() {
+
+        const join = await page.$$('[role="article"] [role="button"]');
+        // console.log(join);
+
+        // await join[2].click();
 
 
-    // await page.click('[role="article"] [role="link"] span');
+        // await page.waitForTimeout(TIMEOUT + 5000);
+        // await page.screenshot({ path: 'glance5.png' });
+        const openGroup = await page.$$('[role="article"] [role="link"] span');
 
-    await page.waitForTimeout(TIMEOUT);
-    const Dialog = await page.evaluate(() => Array.from(document.querySelectorAll('[role="dialog"] '), element => element.textContent));
-    console.log(Dialog);
+        for (let index = 0; index < 5; index++) {
 
-    await postInGroup(page);
+            // console.log("Waiting for Selector  :   ", index, "\n");
+
+            await page.waitForSelector(join[index]);
+            await page.click(join[index]);
+
+            await page.waitForSelector(openGroup[index]);
+
+            await page.click(openGroup[index]);
+
+
+            // await page.waitForTimeout(3000);
+            // await page.click('[role="article"] [role="link"] span');
+            await postInGroup(page);
+        }
+
+        // await openGroup[2].click();
+        // await page.click('[role="article"] [role="link"] span');
+
+        await page.waitForTimeout(TIMEOUT);
+        // const Dialog = await page.evaluate(() => Array.from(document.querySelectorAll('[role="dialog"] '), element => element.textContent));
+        // console.log(Dialog);
+
+        // await postInGroup(page);
+
+
+    }
 
     // await page.screenshot({ path: 'Dialog.png' });
     async function postInGroup(page) {
-
-
         try {
-
             console.log("Post Group");
-
             // await page.screenshot({ path: 'glance6.png' });
             console.log("Open Post Popup");
 
             try {
                 await page.waitForTimeout(3000);
-
                 await page.click('[data-pagelet="GroupInlineComposer"] [role="button"] span');
                 // Does exist
             } catch {
@@ -186,7 +250,6 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
             // await page.screenshot({ path: 'glance7.png' });
 
-
             // await page.click('[id="placeholder-6hpma"]');
             await page.keyboard.type(postGroup);
             console.log("Typing the post text");
@@ -200,21 +263,21 @@ playTest = async (url, searchString, postGroup, username, password) => {
             await page.waitForTimeout(TIMEOUT);
 
             // await page.screenshot({ path: 'glance8.png' });
-
             console.log("\\n");
+            await page.waitForTimeout(TIMEOUT);
 
             await page.goBack();
+
             await page.waitForTimeout(TIMEOUT);
-            await page.waitForTimeout(TIMEOUT);
+
 
 
 
 
         } catch (err) {
+            console.log("Error On Posting ");
             console.log(err); // TypeError: failed to fetch
         }
-
-
 
     }
 
