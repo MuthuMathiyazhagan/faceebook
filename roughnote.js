@@ -141,23 +141,17 @@ playTest = async (url, searchString, postGroup, username, password) => {
     // await firstJoin.click();
     await page.click('[role="article"] [role="button"]');
     await firstOpen.click();
-    await page.waitForTimeout(5000);
-
-    page = await postInGroup(page);
+    await postInGroup(page);
 
     // await secondJoin.click();
     await page.click('[role="article"] [role="button"]');
     await secondOpen.click();
-    await page.waitForTimeout(5000);
-
-    page = await postInGroup(page);
+    await postInGroup(page);
 
     // await thirdJoin.click();
     await page.click('[role="article"] [role="button"]');
     await thirdOpen.click();
-    await page.waitForTimeout(5000);
-
-    page = await postInGroup(page);
+    await postInGroup(page);
 
 
 
@@ -274,21 +268,21 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
     }
 
+    // await page.screenshot({ path: 'Dialog.png' });
     async function postInGroup(page) {
         try {
-
             console.log("Post Group");
             // await page.screenshot({ path: 'glance6.png' });
             console.log("Open Post Popup");
 
             try {
-                await page.waitForTimeout(6000);
+                await page.waitForTimeout(3000);
                 await page.click('[data-pagelet="GroupInlineComposer"] [role="button"] span');
                 // Does exist
             } catch {
                 // Does not
                 await page.goBack();
-                return page;
+                return;
             }
 
 
@@ -309,6 +303,7 @@ playTest = async (url, searchString, postGroup, username, password) => {
 
             await page.waitForTimeout(TIMEOUT);
 
+            // await page.screenshot({ path: 'glance8.png' });
             console.log("\\n");
             await page.waitForTimeout(TIMEOUT);
 
